@@ -1,0 +1,39 @@
+{
+  "name": "sparse-bit-string",
+  "version": "0.1.0",
+  "description": "A utility for packing large integer sets in to URL-encodable strings.",
+  "main": "dist/bitstring.js",
+  "typings": "dist/bitstring.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "clean": "rimraf dist",
+    "clean:all": "npm run clean && rimraf package-lock.json node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjsr/sparse-bit-string.git"
+  },
+  "keywords": [
+    "Bit",
+    "Set",
+    "Array",
+    "String"
+  ],
+  "author": "Tim Rowe <tim@tjsr.id.au>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tjsr/sparse-bit-string/issues"
+  },
+  "homepage": "https://github.com/tjsr/sparse-bit-string#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "rimraf": "^4.4.1",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.3"
+  },
+  "files": [
+    "dist"
+  ]
+}
