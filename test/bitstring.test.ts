@@ -162,3 +162,11 @@ describe('numberToEncodingChar', () => {
     expect(() => numberToEncodingChar(64)).toThrowError();
   });
 });
+
+describe('buildSet', () => {
+  test('Should return static array', () => {
+    const expected = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'.split('');
+    const output = buildSet();
+    expect(output).toEqual(expected);
+  });
+});
