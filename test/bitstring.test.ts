@@ -1,4 +1,4 @@
-import { buildNumberFromFlags, buildSet, letterToNumbers, numberArrayToEncodedString, stringToNumberArray } from "../src/bitstring";
+import { buildNumberFromFlags, buildSet, letterToNumbers, numberArrayToEncodedString, numberToEncodingChar, stringToNumberArray } from "../src/bitstring";
 
 describe('stringToNumberArray', () => {
   const letters: string[] = buildSet();
@@ -145,5 +145,20 @@ describe('Two-way conversion', () => {
   ])('Converts %p expecting %p', (numbers: number[], str: string) => {
     expect(numberArrayToEncodedString(numbers)).toEqual(str);
     expect(stringToNumberArray(str)).toEqual(numbers.sort());
+  });
+});
+
+describe('numberToEncodingChar', () => {
+  test('Should get single encoding letter for number', () => {
+    expect(numberToEncodingChar(43)).toEqual('r');
+    expect(numberToEncodingChar(38)).toEqual('m');
+    expect(numberToEncodingChar(55)).toEqual('3');
+    expect(numberToEncodingChar(6)).toEqual('G');
+    expect(numberToEncodingChar(0)).toEqual('A');
+    expect(numberToEncodingChar(63)).toEqual('-');
+  });
+
+  test('Should throw exception if out of range character encoded', () => {
+    expect(() => numberToEncodingChar(64)).toThrowError();
   });
 });
