@@ -1,0 +1,24 @@
+name: Build sparse-bit-string
+run-name: ${{ github.actor }} Running A/B See build.
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+    
+    - run: npm ci
+    - run: npm run build
+    - run: npm run test
