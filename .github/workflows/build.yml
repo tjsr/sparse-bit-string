@@ -1,5 +1,5 @@
 name: Build sparse-bit-string
-run-name: ${{ github.actor }} Running A/B See build.
+run-name: ${{ github.actor }} Running sparse-bit-string build.
 on: [push]
 jobs:
   build:
