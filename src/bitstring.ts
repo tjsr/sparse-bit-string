@@ -1,4 +1,7 @@
-export const numberArrayToEncodedString = (input: number[]): string => {
+export type EncodedString = string;
+export type EncodingSet = string[];
+
+export const numberArrayToEncodedString = (input: number[]): EncodedString => {
   if (input === undefined) {
     console.debug('An undefined array was passed in but should not happen.');
     return '';
@@ -17,11 +20,15 @@ export const numberArrayToEncodedString = (input: number[]): string => {
   return outputString;
 };
 
-export const buildSet = (): string[] => {
+export const singleValueToNumber = (value: string, letters?: EncodingSet): number => {
+  return (letters || buildSet()).findIndex((arrValue) => arrValue == value);
+};
+
+export const buildSet = (): EncodingSet => {
   return 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'.split('');
 };
 
-export const letterToNumbers = (str: string, letters?: string[]): number[] => {
+export const letterToNumbers = (str: string, letters?: EncodingSet): number[] => {
   if (letters == undefined) {
     letters = buildSet();
   }
@@ -37,7 +44,7 @@ export const letterToNumbers = (str: string, letters?: string[]): number[] => {
   return output;
 };
 
-export const stringToNumberArray = (str: string, letters?: string[]): number[] => {
+export const stringToNumberArray = (str: EncodedString, letters?: EncodingSet): number[] => {
   if (letters == undefined) {
     letters = buildSet();
   }
@@ -74,7 +81,7 @@ export const buildNumberFromFlags = (input: number[]): number => {
   }, 0);
 };
 
-export const numberToEncodingChar = (input: number, letters?: string[]): string => {
+export const numberToEncodingChar = (input: number, letters?: EncodingSet): string => {
   if (letters === undefined) {
     letters = buildSet();
   }
