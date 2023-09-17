@@ -1,4 +1,4 @@
-import { getRangeStringsFromSetBlock, rangePairToValuePair } from '../src/compactionHeader';
+import { CompactionOptions, generateHeaderString, getHeaderLength, getRangeStringsFromSetBlock, parseCompactionHeader, rangePairToValuePair } from '../src/compactionHeader';
 
 describe('Should extract elements from compaction strings', () => {
   test('Should break open a single element', () => {
@@ -29,6 +29,7 @@ describe('rangePairToValuePair', () => {
   test('Should extract larger numbers', () => {
     expect(rangePairToValuePair("AAAB")).toEqual([0, 1]);
     expect(rangePairToValuePair("ABAC")).toEqual([1, 2]);
+    expect(rangePairToValuePair("AAHM")).toEqual([0, 460]);
     expect(rangePairToValuePair("ABCACD")).toEqual([66, 131]);
   });
 
@@ -39,8 +40,40 @@ describe('rangePairToValuePair', () => {
   
     expect(testRun).toThrow("Each range must have the same number of characters for upper and lower bounds");
   });
+});
 
-})
+describe('parseCompactionHeader', () => {
+  test('Should return a header for a typical range set with some values removed', () => {
+    const options: CompactionOptions = parseCompactionHeader("f7DAAHMIANwQLZr");
+    expect(options.maxElementNumber).toBe(2043);
+  });
+});
+
+describe('getHeaderLength', () => {
+  test ('Should verify number of characters expected for a given header', () => {
+    const testHeader: CompactionOptions = {
+      maxElementNumber: 2043,
+      removalRanges: [[0, 460],
+        [512, 880],
+        [1035, 1643]
+      ]
+    };
+    expect(getHeaderLength(testHeader)).toBe(15);
+  });
+});
+
+describe('generateHeaderString', () => {
+  test ('Should generate a valid header from options', () => {
+    const testHeader: CompactionOptions = {
+      maxElementNumber: 2043,
+      removalRanges: [[0, 460],
+        [512, 880],
+        [1035, 1643]
+      ]
+    };
+    expect(generateHeaderString(testHeader)).toBe("f7DAAHMIANwQLZr");
+  });
+});
 
 describe('Should extract range pair strings', () => {
 
