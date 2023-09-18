@@ -60,8 +60,6 @@ const splitRangeSetValues = (header: CompactionHeaderString, rangeChars: number,
 export const parseCompactionHeader = (header: CompactionHeaderString, letters?: EncodingSet): CompactionOptions => {
   const rangeChars: number = 2;
   const rangeMax: number = parseBase64Number(header.substring(0, rangeChars), letters); // 2 chars - 0-4095 ??
-  const rangeCharString = header.substring(rangeChars+1);
-  console.log(rangeCharString);
   const rangesString: SingleRangeString[] = splitRangeSetValues(header, rangeChars);
   const rangePairs: RangePair[] = rangesString.map((pair) => rangePairToValuePair(pair))
 
