@@ -1,4 +1,6 @@
-import { EncodingSet, numberToEncodingChar, singleValueToNumber } from "./bitstring";
+import { EncodingSet } from "./types";
+import { numberToEncodingChar } from "./encoder";
+import { singleValueToNumber } from "./decoder";
 
 export const parseBase64Number = (input: string, letters?: EncodingSet): number => {
   const partValues: number[] = input.split('')

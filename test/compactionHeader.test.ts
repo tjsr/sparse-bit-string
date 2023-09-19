@@ -1,5 +1,9 @@
 import { CompactionOptions, generateHeaderString, getHeaderLength, getRangeStringsFromSetBlock, parseCompactionHeader, rangePairToValuePair } from '../src/compactionHeader';
 
+import { NumberRange } from '../src/types';
+import { generatedCompressedStringWithHeader } from '../src/compactor';
+import { stringToNumberArray } from '../src/decoder';
+
 describe('Should extract elements from compaction strings', () => {
   test('Should break open a single element', () => {
     expect(getRangeStringsFromSetBlock("ABCD", 1)).toEqual(["ABCD"]);
@@ -74,6 +78,72 @@ describe('generateHeaderString', () => {
     expect(generateHeaderString(testHeader)).toBe("f7DAAHMIANwQLZr");
   });
 });
+
+describe('getDataWithHeader', () => {
+  const expectedPayload = "CAAAAAAIADAoMa";
+  test('Should get compacted Bit String', () => {
+    // const expctedCompactedBitString: CompactedBitString = ""
+    // const expectedCompressedVals = [0, 2, 4, 5,  9, 10, 16, 18, 25, 26, 40,  80];
+    const inputArrayVals = [2, 6, 7, 14, 15, 21, 23, 37, 38, 52, 100];
+
+    const missingBlocks: NumberRange[] = [
+      [ 3,  4],
+      [ 8, 10],
+      [24, 30],
+      [53, 55],
+      [60, 64]
+    ];
+
+    // const testHeader: CompactionOptions = {
+    //   maxElementNumber: 2043,
+    //   removalRanges: missingBlocks
+    // };
+
+    // expect(generateHeaderString(testHeader)).toBe("f7FADAEAIAKAYAeA1A3A8BA");
+    // xxxxheader = f7FADAEAIAKAYAeA1A3A8BA
+    //              f7FADAEAIAKAYAeA1A3A8BA IAAAAAAAIADAAUGBi"
+    const header  = "BkFADAEAIAKAYAeA1A3A8BA"
+    
+    const output = generatedCompressedStringWithHeader(inputArrayVals, missingBlocks)
+    expect(output).toBe(header + expectedPayload);
+  });
+
+  test('Should reject passing 0 as first value in range', () => {
+    const inputArrayVals = [2, 6, 7];
+
+    const missingBlocks: NumberRange[] = [
+      [ 0,  1]
+    ];
+
+    const run = () => {
+      generatedCompressedStringWithHeader(inputArrayVals, missingBlocks);
+    };
+
+    expect(run).toThrow("Can't specify 0 in range to be excluded");
+  });
+
+  test('Should verify test string from above expands to value without ranges removed', () => {
+    expect(stringToNumberArray(expectedPayload)).toStrictEqual([2, 4, 5,  9, 10, 16, 18, 25, 26, 40,  80]);
+  });
+
+  test('Should reject a 0 being included in the encoding range', () => {
+    const run1 = () => {
+      const inputArrayVals = [0, 2, 6, 7];
+
+      const missingBlocks: NumberRange[] = [
+        [ 3,  4]
+      ];
+      generatedCompressedStringWithHeader(inputArrayVals, missingBlocks);
+    };
+    expect(run1).toThrow("Can't have 0 in values list");
+  });
+});
+
+describe('createCompactedBitString', () => {
+  test ('Should create a full set with headers', () => {
+
+  });
+})
 
 describe('Should extract range pair strings', () => {
 

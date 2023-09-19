@@ -1,6 +1,5 @@
+import { CompactedHeaderString, EncodingSet } from "./types";
 import { convertNumberToBase64, parseBase64Number } from "./conversion";
-
-import { EncodingSet } from "./bitstring";
 
 type CompactionHeaderString = string;
 type RangePair = [number, number];
@@ -10,14 +9,6 @@ export interface CompactionOptions {
   maxElementNumber: number,
   removalRanges: RangePair[],
 }
-
-export const createHeader = (): CompactionHeaderString => {
-  return 'xyyy';
-};
-
-// const getBytesPerValue = (range: string): number => {
-//   return 2;
-// };
 
 export const getRangeStringsFromSetBlock = (rangeSetsString: JoinedRangeString, numberOfRanges: number): SingleRangeString[] => {
   const outputStrings: SingleRangeString[] = [];
@@ -83,7 +74,7 @@ const getRangesString = (pairs: RangePair[], rangeSize: number): string => {
   return pairs.map((pair) => convertPairToString(pair, rangeSize)).join("");
 };
 
-export const generateHeaderString = (header: CompactionOptions): string => {
+export const generateHeaderString = (header: CompactionOptions): CompactedHeaderString => {
   const maxElementChar = convertNumberToBase64(header.maxElementNumber, 2);
   const rangesChar = convertNumberToBase64(header.removalRanges.length);
   const rangesString = getRangesString(header.removalRanges, header.maxElementNumber > 64 ? 2 : 1);

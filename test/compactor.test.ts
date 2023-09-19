@@ -8,7 +8,7 @@ describe('compactRange', () => {
     const expectedOutput: number[] = [
       1, 2, 4, 5, 9, 13
     ];
-    const output: number[] = compactRange(input, 5, 8);
+    const output: number[] = compactRange(input, [5, 8]);
     expect(output).toEqual(expectedOutput);
   });
 
@@ -17,21 +17,21 @@ describe('compactRange', () => {
       const input: number[] = [
         1, 2, 4, 5, 9, 13, 17
       ];
-      compactRange(input, 5, 8);
+      compactRange(input, [5, 8]);
     };
 
     const run2 = () => {
       const input: number[] = [
         1, 2, 4, 8, 9, 13, 17
       ];
-      compactRange(input, 5, 8);
+      compactRange(input, [5, 8]);
     };
 
     const run3 = () => {
       const input: number[] = [
         1, 2, 4, 7, 9, 13, 17
       ];
-      compactRange(input, 5, 8);
+      compactRange(input, [5, 8]);
     };
 
     expect(run1).toThrow("Can't compact when values exist inside given range");
@@ -44,13 +44,13 @@ describe('compactRange', () => {
       1, 2, 4, 9, 13, 17
     ];
     const run1 = () => {
-      compactRange(input, 5, 5);
+      compactRange(input, [5, 5]);
     };
     const run2 = () => {
-      compactRange(input, 5, 4);
+      compactRange(input, [5, 4]);
     };
     const run3 = () => {
-      compactRange(input, 10, 5);
+      compactRange(input, [10, 5]);
     };
     expect(run1).toThrow("Lower must be less than upper");
     expect(run2).toThrow("Lower must be less than upper");

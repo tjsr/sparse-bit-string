@@ -1,7 +1,13 @@
-import { buildNumberFromFlags, buildSet, letterToNumbers, numberArrayToEncodedString, numberToEncodingChar, stringToNumberArray } from "../src/bitstring";
+import { letterToNumbers, stringToNumberArray } from "../src/decoder";
+
+import { EncodingSet } from "../src/types";
+import { buildNumberFromFlags } from "../src/flags";
+import { buildSet } from "../src/common";
+import { numberArrayToEncodedString } from "../src/bitstring";
+import { numberToEncodingChar } from "../src/encoder";
 
 describe('stringToNumberArray', () => {
-  const letters: string[] = buildSet();
+  const letters: EncodingSet = buildSet();
   test('Should convert single character from list', () => {
     expect(stringToNumberArray('r', letters)).toEqual([1, 2, 4, 6]);
     expect(stringToNumberArray('A', letters)).toEqual([]);
@@ -63,6 +69,13 @@ describe('buildNumberFromFlags', () => {
     expect(buildNumberFromFlags([])).toEqual(0);
   });
 
+  test('Should permit 0 to be encoded', () => {
+    const run = () => {
+      buildNumberFromFlags([0]);
+    };
+    expect(run).not.toThrow("Can't have 0 in values list");
+  });
+
   test('Should return correct value for only a single selected number', () => {
     expect(buildNumberFromFlags([4])).toEqual(8);
   });
@@ -88,6 +101,14 @@ describe('numberArrayToEncodedString', () => {
   test('Test boundary value', () => {
     expect(numberArrayToEncodedString([7])).toEqual('BA');
   });
+
+  test('Should not permit 0 to be encoded', () => {
+    const run = () => {
+      numberArrayToEncodedString([0]);
+    };
+
+    expect(run).toThrow("Can't have 0 in values list");
+  })
 
   test('Should create two-letter letter', () => {
     expect(numberArrayToEncodedString([2, 3, 7])).toEqual('BG');
@@ -124,6 +145,7 @@ describe('numberArrayToEncodedString', () => {
       1022, 1057, 231, 977, 562, 1031, 1341])).toEqual('EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAAAAQCA' +
       'AAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAABAIAAAAAAAAAMAAAAEAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA' +
       'AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAIAAAAAAAAAgAAAAAgAAAAAAAAABAA');
+    expect(numberArrayToEncodedString([2, 6, 7, 14, 15, 21, 23, 37, 38, 52, 100])).toEqual("IAAAAAAAIADAAUGBi");
   });
 
   test('Should allow a single high number', () => {
