@@ -1,6 +1,8 @@
 import { EncodedString, EncodingSet } from "./types";
+import { getHeaderLength, parseCompactionHeader } from "./compactionHeader";
 
 import { buildSet } from "./common";
+import { expandData } from "./expander";
 
 export const singleValueToNumber = (value: string, letters?: EncodingSet): number => {
   return (letters || buildSet()).findIndex((arrValue) => arrValue == value);
@@ -43,4 +45,13 @@ export const stringToNumberArray = (str: EncodedString, letters?: EncodingSet): 
   }
 
   return output;
+};
+
+export const extractCompressedBitstring = (payload:EncodedString): number[] => {
+  const header = parseCompactionHeader(payload);
+  const headerLength = getHeaderLength(header);
+  const body: EncodedString = payload.substring(headerLength);
+  const compressedNumbers: number[] = stringToNumberArray(body);
+  const expandedNumberRange: number[] = expandData(compressedNumbers, header.removalRanges);
+  return expandedNumberRange;
 };

@@ -79,13 +79,11 @@ describe('generateHeaderString', () => {
   });
 });
 
-describe('getDataWithHeader', () => {
+describe('generatedCompressedStringWithHeader', () => {
   const expectedPayload = "CAAAAAAIADAoMa";
+  const expectedCompressedVals = [2, 4, 5,  9, 10, 16, 18, 25, 26, 40,  80];
+  const inputArrayVals = [2, 6, 7, 14, 15, 21, 23, 37, 38, 52, 100];
   test('Should get compacted Bit String', () => {
-    // const expctedCompactedBitString: CompactedBitString = ""
-    // const expectedCompressedVals = [0, 2, 4, 5,  9, 10, 16, 18, 25, 26, 40,  80];
-    const inputArrayVals = [2, 6, 7, 14, 15, 21, 23, 37, 38, 52, 100];
-
     const missingBlocks: NumberRange[] = [
       [ 3,  4],
       [ 8, 10],
@@ -94,16 +92,7 @@ describe('getDataWithHeader', () => {
       [60, 64]
     ];
 
-    // const testHeader: CompactionOptions = {
-    //   maxElementNumber: 2043,
-    //   removalRanges: missingBlocks
-    // };
-
-    // expect(generateHeaderString(testHeader)).toBe("f7FADAEAIAKAYAeA1A3A8BA");
-    // xxxxheader = f7FADAEAIAKAYAeA1A3A8BA
-    //              f7FADAEAIAKAYAeA1A3A8BA IAAAAAAAIADAAUGBi"
     const header  = "BkFADAEAIAKAYAeA1A3A8BA"
-    
     const output = generatedCompressedStringWithHeader(inputArrayVals, missingBlocks)
     expect(output).toBe(header + expectedPayload);
   });
@@ -123,7 +112,7 @@ describe('getDataWithHeader', () => {
   });
 
   test('Should verify test string from above expands to value without ranges removed', () => {
-    expect(stringToNumberArray(expectedPayload)).toStrictEqual([2, 4, 5,  9, 10, 16, 18, 25, 26, 40,  80]);
+    expect(stringToNumberArray(expectedPayload)).toStrictEqual(expectedCompressedVals);
   });
 
   test('Should reject a 0 being included in the encoding range', () => {
@@ -137,14 +126,4 @@ describe('getDataWithHeader', () => {
     };
     expect(run1).toThrow("Can't have 0 in values list");
   });
-});
-
-describe('createCompactedBitString', () => {
-  test ('Should create a full set with headers', () => {
-
-  });
-})
-
-describe('Should extract range pair strings', () => {
-
 });

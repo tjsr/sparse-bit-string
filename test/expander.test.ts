@@ -61,8 +61,3 @@ describe('expandData', () => {
   });
 });
 
-describe('extractCompressedBitstring', () => {
-  test('Should take a compressed string and extract a range', () => {
-    
-  })
-})

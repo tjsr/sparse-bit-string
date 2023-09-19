@@ -5,6 +5,9 @@ type CompactionHeaderString = string;
 type RangePair = [number, number];
 type JoinedRangeString = string;
 type SingleRangeString = string;
+const CHARS_FOR_MAX_SIZE = 2;
+const CHARS_FOR_COMPRESS_RANGE_COUNT = 1;
+
 export interface CompactionOptions {
   maxElementNumber: number,
   removalRanges: RangePair[],
@@ -49,9 +52,8 @@ const splitRangeSetValues = (header: CompactionHeaderString, rangeChars: number,
 };
 
 export const parseCompactionHeader = (header: CompactionHeaderString, letters?: EncodingSet): CompactionOptions => {
-  const rangeChars: number = 2;
-  const rangeMax: number = parseBase64Number(header.substring(0, rangeChars), letters); // 2 chars - 0-4095 ??
-  const rangesString: SingleRangeString[] = splitRangeSetValues(header, rangeChars);
+  const rangeMax: number = parseBase64Number(header.substring(0, CHARS_FOR_MAX_SIZE), letters); // 2 chars - 0-4095 ??
+  const rangesString: SingleRangeString[] = splitRangeSetValues(header, CHARS_FOR_MAX_SIZE);
   const rangePairs: RangePair[] = rangesString.map((pair) => rangePairToValuePair(pair))
 
   const output: CompactionOptions = {
@@ -63,7 +65,7 @@ export const parseCompactionHeader = (header: CompactionHeaderString, letters?: 
 
 export const getHeaderLength = (header: CompactionOptions): number => {
   const charsPerRangeItem = header.maxElementNumber < 64 ? 1 : 2;
-  return 2 + 1 + (charsPerRangeItem * 2 * header.removalRanges.length);
+  return CHARS_FOR_MAX_SIZE + CHARS_FOR_COMPRESS_RANGE_COUNT + (charsPerRangeItem * 2 * header.removalRanges.length);
 };
 
 const convertPairToString = (pair: RangePair, rangeSize: number): string => {
