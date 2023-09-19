@@ -1,4 +1,4 @@
-import { EncodedString, EncodingSet } from "./types";
+import { EncodedString, EncodedStringWithHeader, EncodingSet } from "./types";
 import { getHeaderLength, parseCompactionHeader } from "./compactionHeader";
 
 import { buildSet } from "./common";
@@ -47,7 +47,7 @@ export const stringToNumberArray = (str: EncodedString, letters?: EncodingSet): 
   return output;
 };
 
-export const extractCompressedBitstring = (payload:EncodedString): number[] => {
+export const extractCompressedBitstring = (payload:EncodedStringWithHeader): number[] => {
   const header = parseCompactionHeader(payload);
   const headerLength = getHeaderLength(header);
   const body: EncodedString = payload.substring(headerLength);
