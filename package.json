@@ -1,6 +1,6 @@
 {
   "name": "sparse-bit-string",
-  "version": "0.2.1-2.1",
+  "version": "0.2.2-0",
   "description": "A utility for packing large integer sets in to URL-encodable strings.",
   "main": "dist/bitstring.js",
   "typings": "dist/bitstring.d.ts",
