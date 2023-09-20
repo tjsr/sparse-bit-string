@@ -30,6 +30,6 @@ Run `npm test`
 
 ## Contact
 
-For feature requests contact [Tim Rowe](tim@tjsr.id.au)
+For feature requests contact [Tim Rowe](mailto:tim@tjsr.id.au)
 
 
