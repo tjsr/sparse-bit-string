@@ -18,5 +18,11 @@ describe('extractCompressedBitstring', () => {
     expect(generatedString).toEqual("AOACER");
     const output = extractCompressedBitstring("AOACER");
     expect(output).toStrictEqual(expectedOutput);
-  })
+
+    const expectedOutput2 = [2, 4, 7, 13];
+    const generatedString2 = generateCompressedStringWithHeader(expectedOutput2);
+    expect(generatedString2).toEqual("ANABBK");
+    const output2 = extractCompressedBitstring("ANABBK");
+    expect(output2).toStrictEqual(expectedOutput2);
+  });
 });

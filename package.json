@@ -1,6 +1,6 @@
 {
   "name": "sparse-bit-string",
-  "version": "0.2.2-b2",
+  "version": "0.2.2-b4",
   "description": "A utility for packing large integer sets in to URL-encodable strings.",
   "main": "dist/bitstring.js",
   "typings": "dist/bitstring.d.ts",
@@ -10,7 +10,7 @@
     "test": "jest",
     "clean": "rimraf dist",
     "clean:all": "npm run clean && rimraf package-lock.json node_modules",
-    "prePublish": "npm run clean && npm run build && npm run test"
+    "prepublishOnly": "npm run clean && npm run build && npm run test"
   },
   "repository": {
     "type": "git",
