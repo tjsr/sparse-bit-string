@@ -15,7 +15,7 @@ There are four main methods you'll want from this project.
 `stringToNumberArray` - Take an input string of characters and decode it to a set of numbers
 
 ### Compressed encoding with headers  
-`generatedCompressedStringWithHeader(string, [[number, number]])` - Take an input string of numbers and a list of ranges to splice out.  This produces a string with a header block that tells us the number ranges used in the output string, then the encoded data.  
+`generateCompressedStringWithHeader(string, [[number, number]])` - Take an input string of numbers and a list of ranges to splice out.  This produces a string with a header block that tells us the number ranges used in the output string, then the encoded data.  
 `extractCompressedBitstring(string)` - Take an input string with a header block and a data payload - extracing the number set produced with the above method.
 
 ## Building

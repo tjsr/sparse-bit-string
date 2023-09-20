@@ -59,16 +59,16 @@ const checkRangesForValidRemovableBlocks = (inputNumbers: number[], missingBlock
   return missingBlocks.every((range) => checkRangeForValidRemovableBlocks(inputNumbers, range));
 };
 
-export const generatedCompressedStringWithHeader = (inputNumbers: number[], missingBlocks:NumberRange[]): CompressedBitArrayWithHeader => {
-  const max = inputNumbers.reduce((max, current) => current > max ? current : max);
-  const testHeader: CompactionOptions = {
+export const generateCompressedStringWithHeader = (inputNumbers: number[], missingBlocks?:NumberRange[]): CompressedBitArrayWithHeader => {
+  const max = inputNumbers.length > 0 ? inputNumbers.reduce((max, current) => current > max ? current : max) : 0;
+  const header: CompactionOptions = {
     maxElementNumber: max,
-    removalRanges: missingBlocks
+    removalRanges: missingBlocks || []
   };
-  checkRangesForValidRemovableBlocks(inputNumbers, missingBlocks);
+  checkRangesForValidRemovableBlocks(inputNumbers, header.removalRanges);
   
-  const headerString: string = generateHeaderString(testHeader);
-  const revisedRange: number[] = removeRanges(inputNumbers, missingBlocks);
+  const headerString: string = generateHeaderString(header);
+  const revisedRange: number[] = removeRanges(inputNumbers, header.removalRanges);
   const encodedString: EncodedString = numberArrayToEncodedString(revisedRange);
   return `${headerString}${encodedString}`;
 };

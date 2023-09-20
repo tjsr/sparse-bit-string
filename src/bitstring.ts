@@ -1,5 +1,9 @@
 export type { EncodedString, CompressedBitArrayWithHeader } from './types';
-export { numberArrayToEncodedString } from './encoder';
-export { extractCompressedBitstring, stringToNumberArray } from './decoder';
-export { generatedCompressedStringWithHeader } from './compactor';
-export { buildSet } from './common';
+
+import { extractCompressedBitstring, stringToNumberArray } from './decoder';
+
+import { buildSet } from './common';
+import { generateCompressedStringWithHeader } from './compactor';
+import { numberArrayToEncodedString } from './encoder';
+
+export {numberArrayToEncodedString, extractCompressedBitstring, stringToNumberArray, generateCompressedStringWithHeader, buildSet};

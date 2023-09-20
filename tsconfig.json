@@ -5,6 +5,7 @@
     "module": "commonjs",                                /* Specify what module code is generated. */
     "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
     "rootDir": "./src",                                  /* Specify the root folder within your source files. */
+    "baseUrl": "./src", 
     "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
     "strict": true,                                      /* Enable all strict type-checking options. */
     "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */

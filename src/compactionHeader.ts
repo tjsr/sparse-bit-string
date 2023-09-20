@@ -15,7 +15,7 @@ export interface CompactionOptions {
 
 export const getRangeStringsFromSetBlock = (rangeSetsString: JoinedRangeString, numberOfRanges: number): SingleRangeString[] => {
   const outputStrings: SingleRangeString[] = [];
-  if ((rangeSetsString.length / numberOfRanges) % 2 !== 0) {
+  if (numberOfRanges !== 0 && (rangeSetsString.length / numberOfRanges) % 2 !== 0) {
     throw new Error('Each range must have the same number of characters for upper and lower bounds');
   }
   const lengthPerRange: number = rangeSetsString.length / numberOfRanges;
@@ -78,7 +78,7 @@ const getRangesString = (pairs: RangePair[], rangeSize: number): string => {
 
 export const generateHeaderString = (header: CompactionOptions): CompactedHeaderString => {
   const maxElementChar = convertNumberToBase64(header.maxElementNumber, 2);
-  const rangesChar = convertNumberToBase64(header.removalRanges.length);
+  const rangesChar = convertNumberToBase64(header.removalRanges.length, 1);
   const rangesString = getRangesString(header.removalRanges, header.maxElementNumber > 64 ? 2 : 1);
   return maxElementChar + rangesChar + rangesString;
 };

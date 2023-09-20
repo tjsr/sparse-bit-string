@@ -1,7 +1,8 @@
 import { CompactionOptions, generateHeaderString, getHeaderLength, getRangeStringsFromSetBlock, parseCompactionHeader, rangePairToValuePair } from '../src/compactionHeader';
 
 import { NumberRange } from '../src/types';
-import { generatedCompressedStringWithHeader } from '../src/compactor';
+import { convertNumberToBase64 } from '../src/conversion';
+import { generateCompressedStringWithHeader } from '../src/compactor';
 import { stringToNumberArray } from '../src/decoder';
 
 describe('Should extract elements from compaction strings', () => {
@@ -21,6 +22,10 @@ describe('Should extract elements from compaction strings', () => {
     };
 
     expect(testRun).toThrow("Each range must have the same number of characters for upper and lower bounds");
+  });
+
+  test('Should not fail when an empty set of ranges is given', () => {
+    expect(getRangeStringsFromSetBlock("", 0)).toEqual([]);
   });
 });
 
@@ -77,9 +82,19 @@ describe('generateHeaderString', () => {
     };
     expect(generateHeaderString(testHeader)).toBe("f7DAAHMIANwQLZr");
   });
+
+  test('Should generate a header string with no removal ranges and no max', () => {
+    const testHeader: CompactionOptions = {
+      maxElementNumber: 0,
+      removalRanges: []
+    };
+    expect(convertNumberToBase64(0, 2)).toBe("AA");
+    expect(convertNumberToBase64(0, 1)).toBe("A");
+    expect(generateHeaderString(testHeader)).toBe("AAA");
+  })
 });
 
-describe('generatedCompressedStringWithHeader', () => {
+describe('generateCompressedStringWithHeader', () => {
   const expectedPayload = "CAAAAAAIADAoMa";
   const expectedCompressedVals = [2, 4, 5,  9, 10, 16, 18, 25, 26, 40,  80];
   const inputArrayVals = [2, 6, 7, 14, 15, 21, 23, 37, 38, 52, 100];
@@ -93,7 +108,7 @@ describe('generatedCompressedStringWithHeader', () => {
     ];
 
     const header  = "BkFADAEAIAKAYAeA1A3A8BA"
-    const output = generatedCompressedStringWithHeader(inputArrayVals, missingBlocks)
+    const output = generateCompressedStringWithHeader(inputArrayVals, missingBlocks)
     expect(output).toBe(header + expectedPayload);
   });
 
@@ -105,7 +120,7 @@ describe('generatedCompressedStringWithHeader', () => {
     ];
 
     const run = () => {
-      generatedCompressedStringWithHeader(inputArrayVals, missingBlocks);
+      generateCompressedStringWithHeader(inputArrayVals, missingBlocks);
     };
 
     expect(run).toThrow("Can't specify 0 in range to be excluded");
@@ -122,8 +137,13 @@ describe('generatedCompressedStringWithHeader', () => {
       const missingBlocks: NumberRange[] = [
         [ 3,  4]
       ];
-      generatedCompressedStringWithHeader(inputArrayVals, missingBlocks);
+      generateCompressedStringWithHeader(inputArrayVals, missingBlocks);
     };
     expect(run1).toThrow("Can't have 0 in values list");
+  });
+
+  test('Should still generate output with no input values', () => {
+    const output = generateCompressedStringWithHeader([], []);
+    expect(output).toBe("AAA");
   });
 });
