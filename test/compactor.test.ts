@@ -1,4 +1,4 @@
-import { compactRange, removeRanges } from '../src/compactor';
+import { compactRange, generateCompressedStringWithHeader, removeRanges } from '../src/compactor';
 
 describe('compactRange', () => {
   test('Should remove empty values from a range', () => {
@@ -89,5 +89,27 @@ describe('removeRanges', () => {
     ];
     const output: number[] = removeRanges(input, [[5, 8], [19, 24], [27, 28]]);
     expect(output).toEqual(expectedOutput);
+  });
+});
+
+describe('createCompressedStringWithHeader', () => {
+  test('Should create output string', () => {
+    const inputRange1 = [77,102,108,242,437,664,666,727,778,786,826,854,1026,1274,1275,1276,1277,1278,1279,1280,1308,1311,1312,1324,1326,1336,1337,1338,1339];
+    const removeRange1a: [number,number][] = [[1,76],[109,241],[438,663],[667,726],[787,825],[855,1025]];
+    const removeRange1b: [number, number][] = [[1, 76], [109, 241], [243, 436], [438, 663], [667, 726], [728, 777],
+    [787, 825], [855, 1025], [1027, 1273]];
+
+    const outputString1a = generateCompressedStringWithHeader(inputRange1, removeRange1a);
+    const expectedOutputString1a = "U7GABBMBtDxG2KXKbLWMTM5NXQBPAFABkAAAAfwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAMBAAAAAAAANgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGCAAAB";
+    expect(outputString1a).toEqual(expectedOutputString1a);
+    const outputString1b = generateCompressedStringWithHeader(inputRange1, removeRange1b);
+    const expectedOutputString1b = "U7JABBMBtDxDzG0G2KXKbLWLYMJMTM5NXQBQDT5eAKADIAAAA-4AAAAwHeCAAAB";
+    expect(outputString1b).toEqual(expectedOutputString1b);
+
+    const inputRange2 = [813,814,815,817,819,820,821,822,897,898,899,900];
+    const removeRange2: [number, number][] = [[1,812],[823,896]];
+    const outputString2 = generateCompressedStringWithHeader(inputRange2, removeRange2);
+    const expectedOutputString2 = "OECABMsM3OAD-X";
+    expect(outputString2).toEqual(expectedOutputString2);
   });
 });
