@@ -12,5 +12,5 @@ jobs:
         result-encoding: string
         script: |
           const searchQuery = `${context.repo.repo} in:file filename:package.json path:/`;
-          const searchResult = await github.search.code({ q: searchQuery })
+          const searchResult = await github.rest.search.code({ q: searchQuery })
 
