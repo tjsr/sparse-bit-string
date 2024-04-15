@@ -10,14 +10,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.20.2, 20.12.2]
 
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     
     - run: npm ci
     - run: npm run build
