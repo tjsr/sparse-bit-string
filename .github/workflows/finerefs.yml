@@ -2,14 +2,15 @@ name: Find all repos that depend on sparse-bit-string
 run-name: ${{ github.actor }} Running sparse-bit-string ref check.
 on: [push]
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    uses: actions/github-script@v7
-    # id: projectRefs
-    name: Search for references
-    with:
-      result-encoding: string
-      script: |
-        const searchQuery = `${context.repo.repo} in:file filename:package.json path::/`;
-        const searchResult = await github.search.code({ q: searchQuery })
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@v7
+      id: projectRefs
+      name: Search for references
+      with:
+        result-encoding: string
+        script: |
+          const searchQuery = `${context.repo.repo} in:file filename:package.json path:/`;
+          const searchResult = await github.search.code({ q: searchQuery })
 
