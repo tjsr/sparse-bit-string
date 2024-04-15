@@ -15,9 +15,28 @@ jobs:
           const searchQuery = `${context.repo.repo} in:file filename:package.json path:/`;
           const paginatedRepos = await github.paginate(github.rest.search.code, { q: searchQuery, per_page: 100 });
           const repos = paginatedRepos.map(item => item.repository.full_name);
-          return repos;
+          return repos.filter(repo => repo !== context.repo.full_name);
 
-    - name: Output results
+    - name: List of referencing repositories
       run: echo "${{ steps.projectRefs.outputs.result }}"
-          
+    
+    - name: Get the SBOM for each repository
+      uses: actions/github-script@v7
+      id: getBoms
+      with:
+        result-encoding: json
+        script: |
+          const repos = context.steps.projectRefs.outputs.result;
+
+          const boms = [];
+          for (const repo of repos) {
+            const bom = await github.rest.dependencyGraph.exportSbom({
+              owner: repo.split('/')[0],
+              repo: repo.split('/')[1],
+            });
+            console.log(`${repo}:\n${JSON.stringify(bom)}`);
+            boms.push(bom);
+          }
+          return boms;
+
 
