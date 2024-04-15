@@ -9,8 +9,12 @@ jobs:
       id: projectRefs
       name: Search for references
       with:
-        result-encoding: string
+        result-encoding: json
         script: |
           const searchQuery = `${context.repo.repo} in:file filename:package.json path:/`;
           const searchResult = await github.rest.search.code({ q: searchQuery })
+          const paginatedRepos = await github.paginate(searchResult);
+          const repos = paginatedRepos.map(item => item.repository.full_name);
+          return repos;
+          
 
