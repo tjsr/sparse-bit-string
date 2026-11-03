@@ -26,7 +26,7 @@ You can link a local version if need be, using `npm link` from this project and 
 
 ## Testing
 
-Run `npm test`
+Run `npm test`. Tests are type-checked and compiled with the installed TypeScript compiler into `.test-build`, then executed by Jest. This avoids a separate TypeScript transformer with a narrower compiler-version peer dependency.
 
 ## Contact
 
