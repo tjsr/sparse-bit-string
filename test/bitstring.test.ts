@@ -89,7 +89,7 @@ describe('buildNumberFromFlags', () => {
   });
 
   test('Should throw an exception if you try to encode >6 in array', () => {
-    expect(() => buildNumberFromFlags([1, 3, 7])).toThrowError();
+    expect(() => buildNumberFromFlags([1, 3, 7])).toThrow();
   });
 });
 
@@ -181,7 +181,7 @@ describe('numberToEncodingChar', () => {
   });
 
   test('Should throw exception if out of range character encoded', () => {
-    expect(() => numberToEncodingChar(64)).toThrowError();
+    expect(() => numberToEncodingChar(64)).toThrow();
   });
 });
 
