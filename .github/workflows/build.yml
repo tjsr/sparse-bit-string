@@ -9,8 +9,9 @@ jobs:
       BUILDKIT_PROGRESS: plain
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [22, 24]
+        node-version: [22, 24, 26]
 
     steps:
     - name: Check out repository code
