@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "dist": "npm run clean && npm run build && npm test",
-    "test": "jest",
+    "test": "rimraf .test-build && tsc -p tsconfig.test.json && jest",
     "clean": "rimraf dist",
     "clean:all": "npm run clean && rimraf package-lock.json node_modules",
     "prepublishOnly": "npm run clean && npm run build && npm run test"
@@ -32,8 +32,7 @@
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
     "rimraf": "^6.0.1",
-    "ts-jest": "^29.1.2",
-    "typescript": "^5.4.5"
+    "typescript": "^7.0.2"
   },
   "files": [
     "dist",
