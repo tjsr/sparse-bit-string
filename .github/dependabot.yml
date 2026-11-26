@@ -6,4 +6,9 @@ updates:
       interval: 'weekly'
     assignees:
       - 'tjsr'
-      
+    groups:
+      development:
+        applies-to: version-updates
+        dependency-type: development
+        patterns:
+          - '*'
